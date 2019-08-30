@@ -1,4 +1,7 @@
-﻿using NUnit.Framework;
+﻿using System.Collections.Generic;
+using System.Linq;
+using NUnit.Framework;
+using OpenQA.Selenium;
 
 namespace UITestProject
 {
@@ -15,9 +18,12 @@ namespace UITestProject
         [Test]
         public void SearchByName()
         {
+            var searchValue = "Газпром";
             // поиск по названию организации
-            PageBase.Search("Газпром");
+            PageBase.Search(searchValue);
+            if (PageBase.NotFound()) { throw new WebDriverException($"По запросу {searchValue} ничего не найдено");}
 
+            var results = PageBase.GetMatchResults(new List<string> { searchValue} );
         }
 
         [TearDown]

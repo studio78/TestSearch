@@ -25,6 +25,18 @@ namespace UITestProject
             return elem;
         }
 
+        public static IWebElement FindElementSafe(this IWebElement element, By by)
+        {
+            try
+            {
+                return element.FindElement(by);
+            }
+            catch (NoSuchElementException)
+            {
+                return null;
+            }
+        }
+
         /// <summary>
         /// Подсветка элемента на странице (для отладки тестов)
         /// </summary>

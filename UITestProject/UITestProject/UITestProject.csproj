@@ -76,6 +76,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Common\Asserts.cs" />
+    <Compile Include="Common\Result.cs" />
     <Compile Include="Common\SeleniumTest.cs" />
     <Compile Include="Common\TestBase.cs" />
     <Compile Include="Extensions\WebDriverExtensions.cs" />

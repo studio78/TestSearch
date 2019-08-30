@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using OpenQA.Selenium.Support.UI;
+using UITestProject.Common;
 
 namespace UITestProject
 {
@@ -37,7 +38,62 @@ namespace UITestProject
 //            field.SendKeys(Keys.Enter);
             return this;
         }
-        
+
+        /// <summary>
+        /// Проверка наличия на странице подписи о том, что ничего не найдено
+        /// </summary>
+        public bool NotFound()
+        {
+            return driver.FindElement(By.CssSelector("div#topstuff")).Text.Contains("ничего не найдено");
+        }
+
+        public List<Result> GetAllResults(List<string> filter)
+        {
+            var result = new List<Result>();
+            var allDiv = driver.FindElements(By.CssSelector("div.rc"));
+            foreach (var div in allDiv)
+            {
+                var name = div.FindElement(By.CssSelector("div.ellip")).Text;
+                if (string.IsNullOrEmpty(name)) continue;
+//                if (!filter.All(s => name.Contains(s))) continue;
+                var descSpan = div.FindElementSafe(By.CssSelector("span.st"));
+                result.Add(new Result
+                {
+                    Name = name,
+                    Link = new Uri(div.FindElement(By.CssSelector("a")).GetAttribute("href")),
+                    Description = descSpan?.Text
+                });
+            }
+
+            return result;
+        }
+
+        public List<Result> GetMatchResults(List<string> filter)
+        {
+            var allResult = GetAllResults(filter);
+            var result = new List<Result>();
+            foreach (var record in allResult)
+            {
+                if (!filter.All(s => record.Name.Contains(s))) continue;
+                result.Add(record);
+            }
+            return result;
+        }
+
+//        public List<Result> GetContainsResults(List<string> filter)
+//        {
+//            var allResult = GetAllResults(filter);
+//            var result = new List<Result>();
+//            foreach (var record in allResult)
+//            {
+//                if (!filter.Any(s => record.Name.Contains(s))) continue;
+//                result.Add(record);
+//            }
+//
+//            return allResult.Where(x => (filter.Any(s => x.Name.Contains(s))));
+////            return result;
+//        }
+
         /*
         /// <summary>
         ///  Поиск по подстроке Id и клик
