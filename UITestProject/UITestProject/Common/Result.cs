@@ -1,15 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace UITestProject.Common
 {
+    /// <summary>
+    /// Результат получаемый со страницы поисковика
+    /// </summary>
     public class Result
     {
+        /// <summary>
+        /// Заголовок
+        /// </summary>
         public string Name;
+        /// <summary>
+        /// Ссылка
+        /// </summary>
         public Uri Link;
+        /// <summary>
+        /// Краткое описание
+        /// </summary>
         public string Description;
     }
 }

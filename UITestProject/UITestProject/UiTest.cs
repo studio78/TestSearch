@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-using OpenQA.Selenium;
+﻿using NUnit.Framework;
 
 namespace UITestProject
 {
@@ -15,15 +12,37 @@ namespace UITestProject
             Context.driver.Navigate().GoToUrl("http://www.google.com");
         }
 
-        [Test]
-        public void SearchByName()
+        [Test, Description("Проверка получения результатов поиска по названию и ФИО")]
+        public void Search()
         {
-            var searchValue = "Газпром";
             // поиск по названию организации
-            PageBase.Search(searchValue);
-            if (PageBase.NotFound()) { throw new WebDriverException($"По запросу {searchValue} ничего не найдено");}
+            var results = PageBase.Search("Газпром");
+            // поиск по ФИО
+            var results2 = PageBase.Search("Менделеев Дмитрий Иванович");
 
-            var results = PageBase.GetMatchResults(new List<string> { searchValue} );
+            // можно в результатах, поискать ссылку на Вики и открыть ее
+            foreach (var result in results2)
+            {
+                if (result.Name.Contains("Википедия"))
+                {
+                    PageBase.LinkClick(result.Link);
+                }
+            }
+
+        }
+
+        [Test, Description("Проверка текста всплывающей подсказки в поле поиска")]
+        public void Tooltip()
+        {
+            Asserts.AssertTooltipSearchField("поиск");
+        }
+
+        [Test, Description("Проверка пустой области результатов")]
+        public void ClickLogo()
+        {
+            PageBase.Search("Газпром");
+            PageBase.LogoClick();
+            Asserts.AssertEmptyResult();
         }
 
         [TearDown]

@@ -22,10 +22,6 @@ namespace UITestProject
                 return null;
             }
         }
-        //        public static bool ExistElement(this IWebDriver driver, By locator)
-        //        {
-        //            driver.FindElements(locator).
-        //            return element;
-        //        }
+
     }
 }
